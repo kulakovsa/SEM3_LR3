@@ -1,14 +1,25 @@
+# Программа запускает окно, в котором иллюстрируется работа клеточного автомата
+# "Муревай Лэнгтона". В автомате используется тороидальная геометрия.
+# В зависимости от размера клетки изменяется размер клеточного поля, т.е. 
+# Более крупная клетка будет работать на более маленьком поле, в то время как
+# мелкая клетка будет работать на большом поле. Муравей LRRL.
+
+
 import tkinter
 
 
-size = 600
+# Окно
 root = tkinter.Tk()
 root.title('Langton\'s ant')
 root.configure(background='#FFFFFF')
-canvas = tkinter.Canvas(root, width=size, height=size, bg='#FFFFFF', highlightthickness=0)
-canvas.pack()
-root.update()
 
+# Область для рисования
+size = 600
+canvas = tkinter.Canvas(root, width=size, height=size,
+                        bg='#FFFFFF', highlightthickness=0)
+canvas.pack()
+
+# Создание таблицы, в которой будут записаны состояния клеток
 dot_size = 5
 grid_size = size // dot_size
 matr = ['white'] * grid_size
@@ -18,26 +29,34 @@ for i in range(grid_size):
 x = size // 2
 y = size // 2
 
-i = 0
+i = 0 # С помощью данной переменной будет проходить смена направления муравья
 directions = ['n', 'e', 's', 'w']
 current_direction = directions[i % len(directions)]
 while True:
     if matr[(x//dot_size) % grid_size][(y//dot_size) % grid_size] == 'white':
         i += 1
         matr[(x//dot_size) % grid_size][(y//dot_size) % grid_size] = 'black'
-        canvas.create_rectangle(x % size, y % size, (x + dot_size - 1) % size, (y + dot_size - 1) % size, fill='#000000', outline='#000000')
+        canvas.create_rectangle(x % size, y % size, (x + dot_size - 1) % size,
+                                (y + dot_size - 1) % size,
+                                fill='#000000', outline='#000000')
     elif matr[(x//dot_size) % grid_size][(y//dot_size) % grid_size] == 'black':
         i -= 1
         matr[(x//dot_size) % grid_size][(y//dot_size) % grid_size] = 'red'
-        canvas.create_rectangle(x % size, y % size, (x + dot_size - 1) % size, (y + dot_size - 1) % size, fill='#FF0000', outline='#FF0000')
+        canvas.create_rectangle(x % size, y % size, (x + dot_size - 1) % size,
+                                (y + dot_size - 1) % size,
+                                fill='#FF0000', outline='#FF0000')
     elif matr[(x//dot_size) % grid_size][(y//dot_size) % grid_size] == 'red':
         i -= 1
         matr[(x//dot_size) % grid_size][(y//dot_size) % grid_size] = 'blue'
-        canvas.create_rectangle(x % size, y % size, (x + dot_size - 1) % size, (y + dot_size - 1) % size, fill='#0000FF', outline='#0000FF')
+        canvas.create_rectangle(x % size, y % size, (x + dot_size - 1) % size,
+                                (y + dot_size - 1) % size,
+                                fill='#0000FF', outline='#0000FF')
     elif matr[(x//dot_size) % grid_size][(y//dot_size) % grid_size] == 'blue':
         i += 1
         matr[(x//dot_size) % grid_size][(y//dot_size) % grid_size] = 'white'
-        canvas.create_rectangle(x % size, y % size, (x + dot_size - 1) % size, (y + dot_size - 1) % size, fill='#FFFFFF', outline='#FFFFFF')
+        canvas.create_rectangle(x % size, y % size, (x + dot_size - 1) % size,
+                                (y + dot_size - 1) % size,
+                                fill='#FFFFFF', outline='#FFFFFF')
 
     root.update()
     current_direction = directions[i % len(directions)]
